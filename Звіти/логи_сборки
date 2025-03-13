@@ -1,0 +1,374 @@
+Started by user Hunter Xelmsli
+
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins
+ in /var/lib/jenkins/workspace/test
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Checkout)
+[Pipeline] git
+The recommended git tool is: NONE
+using credential b651ff7a-570c-4930-9fc5-3c3a7a99b547
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/test/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url git@github.com:Xelmsli/test-jenkins.git # timeout=10
+Fetching upstream changes from git@github.com:Xelmsli/test-jenkins.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+using GIT_SSH to set credentials
+Verifying host key using known hosts file
+ > git fetch --tags --force --progress -- git@github.com:Xelmsli/test-jenkins.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 53cfe52601ef1fc0ce435134148c508556a80a00 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 53cfe52601ef1fc0ce435134148c508556a80a00 # timeout=10
+ > git branch -a -v --no-abbrev # timeout=10
+ > git branch -D main # timeout=10
+ > git checkout -b main 53cfe52601ef1fc0ce435134148c508556a80a00 # timeout=10
+Commit message: "Update requirements.txt"
+ > git rev-list --no-walk 9d0642d318444b515f10088a3f46592ae3ca4e48 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Transfer Code to Remote)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sshagent
+[ssh-agent] Using credentials ubuntu
+$ ssh-agent
+SSH_AUTH_SOCK=/tmp/ssh-LixyQaq6OU43/agent.26838
+SSH_AGENT_PID=26841
+Running ssh-add (command line suppressed)
+Identity added: /var/lib/jenkins/workspace/test@tmp/private_key_8908805013760801962.key (ubuntu@ip-172-31-22-166)
+[ssh-agent] Started.
+[Pipeline] {
+[Pipeline] sh
++ ssh -o StrictHostKeyChecking=no ubuntu@34.208.104.73 sudo mkdir -p /opt/myapp
+[Pipeline] }
+$ ssh-agent -k
+unset SSH_AUTH_SOCK;
+unset SSH_AGENT_PID;
+echo Agent pid 26841 killed;
+[ssh-agent] Stopped.
+[Pipeline] // sshagent
+[Pipeline] sshagent
+[ssh-agent] Using credentials ubuntu
+$ ssh-agent
+SSH_AUTH_SOCK=/tmp/ssh-SJMfSJXSWgU9/agent.26861
+SSH_AGENT_PID=26864
+Running ssh-add (command line suppressed)
+Identity added: /var/lib/jenkins/workspace/test@tmp/private_key_13316372838361021390.key (ubuntu@ip-172-31-22-166)
+[ssh-agent] Started.
+[Pipeline] {
+[Pipeline] sh
++ rsync -avz --delete --rsync-path=sudo rsync -e ssh -o StrictHostKeyChecking=no . ubuntu@34.208.104.73:/opt/myapp
+sending incremental file list
+.git/
+.git/FETCH_HEAD
+.git/HEAD
+.git/config
+.git/index
+.git/packed-refs
+.git/logs/HEAD
+.git/logs/refs/heads/
+.git/logs/refs/heads/main
+.git/logs/refs/remotes/origin/main
+.git/objects/
+.git/objects/37/
+.git/objects/37/64ae9ba603e9e098edea582b90163a28fd5f3a
+.git/objects/53/
+.git/objects/53/cfe52601ef1fc0ce435134148c508556a80a00
+.git/objects/66/
+.git/objects/66/ad8dc06e297c26e259a5ef950803c0139efd93
+.git/objects/d1/
+.git/objects/d1/02735416ab8fa8820fcb4c3af268ab99bb4e3c
+.git/refs/heads/
+.git/refs/heads/main
+.git/refs/remotes/origin/
+.git/refs/remotes/origin/main
+my-python-app/
+my-python-app/requirements.txt
+
+sent 6,742 bytes  received 500 bytes  4,828.00 bytes/sec
+total size is 45,881  speedup is 6.34
+[Pipeline] }
+$ ssh-agent -k
+unset SSH_AUTH_SOCK;
+unset SSH_AGENT_PID;
+echo Agent pid 26864 killed;
+[ssh-agent] Stopped.
+[Pipeline] // sshagent
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Install Dependencies on Remote)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sshagent
+[ssh-agent] Using credentials ubuntu
+$ ssh-agent
+SSH_AUTH_SOCK=/tmp/ssh-lBYXEqxagpvr/agent.26884
+SSH_AGENT_PID=26887
+Running ssh-add (command line suppressed)
+Identity added: /var/lib/jenkins/workspace/test@tmp/private_key_15003448493611398927.key (ubuntu@ip-172-31-22-166)
+[ssh-agent] Started.
+[Pipeline] {
+[Pipeline] sh
++ ssh -o StrictHostKeyChecking=no ubuntu@34.208.104.73 bash -s
+Docker is installed
+Docker Compose v2 is installed
+[Pipeline] }
+$ ssh-agent -k
+unset SSH_AUTH_SOCK;
+unset SSH_AGENT_PID;
+echo Agent pid 26887 killed;
+[ssh-agent] Stopped.
+[Pipeline] // sshagent
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build on Remote)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sshagent
+[ssh-agent] Using credentials ubuntu
+$ ssh-agent
+SSH_AUTH_SOCK=/tmp/ssh-qZmkcxtjbmQN/agent.26906
+SSH_AGENT_PID=26909
+Running ssh-add (command line suppressed)
+Identity added: /var/lib/jenkins/workspace/test@tmp/private_key_4914597038483604841.key (ubuntu@ip-172-31-22-166)
+[ssh-agent] Started.
+[Pipeline] {
+[Pipeline] sh
++ ssh -o StrictHostKeyChecking=no ubuntu@34.208.104.73
+                             cd /opt/myapp &&
+                             echo "Содержимое /opt/myapp:" && ls -la &&
+                             sudo docker compose -f docker-compose.yml build
+
+Содержимое /opt/myapp:
+total 32
+drwxr-xr-x 6  111 docker 4096 Mar 13 14:55 .
+drwxr-xr-x 4 root root   4096 Mar 13 14:14 ..
+drwxr-xr-x 8  111 docker 4096 Mar 13 15:04 .git
+drwxr-xr-x 2  111 docker 4096 Mar 13 13:58 .idea
+-rw-r--r-- 1  111 docker   14 Mar 13 13:58 README.md
+-rw-r--r-- 1  111 docker  705 Mar 13 14:55 docker-compose.yml
+drwxr-xr-x 2  111 docker 4096 Mar 13 13:58 monitoring
+drwxr-xr-x 2  111 docker 4096 Mar 13 15:04 my-python-app
+time="2025-03-13T15:04:50Z" level=warning msg="/opt/myapp/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+Compose now can delegate build to bake for better performances
+Just set COMPOSE_BAKE=true
+#0 building with "default" instance using docker driver
+
+#1 [app internal] load build definition from Dockerfile
+#1 transferring dockerfile: 199B done
+#1 DONE 0.0s
+
+#2 [app internal] load metadata for docker.io/library/python:3.9-slim
+#2 DONE 0.7s
+
+#3 [app internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [app 1/5] FROM docker.io/library/python:3.9-slim@sha256:d1fd807555208707ec95b284afd10048d0737e84b5f2d6fdcbed2922b9284b56
+#4 DONE 0.0s
+
+#5 [app internal] load build context
+#5 transferring context: 163B done
+#5 DONE 0.0s
+
+#6 [app 2/5] WORKDIR /app
+#6 CACHED
+
+#7 [app 3/5] COPY requirements.txt .
+#7 DONE 0.1s
+
+#8 [app 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#8 2.883 Collecting Flask==2.1.2
+#8 2.946   Downloading Flask-2.1.2-py3-none-any.whl (95 kB)
+#8 2.966      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 95.2/95.2 kB 4.7 MB/s eta 0:00:00
+#8 3.038 Collecting requests==2.28.1
+#8 3.048   Downloading requests-2.28.1-py3-none-any.whl (62 kB)
+#8 3.051      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 62.8/62.8 kB 174.3 MB/s eta 0:00:00
+#8 3.156 Collecting pytest==7.2.0
+#8 3.169   Downloading pytest-7.2.0-py3-none-any.whl (316 kB)
+#8 3.180      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 316.8/316.8 kB 34.1 MB/s eta 0:00:00
+#8 3.240 Collecting Werkzeug==2.0.3
+#8 3.252   Downloading Werkzeug-2.0.3-py3-none-any.whl (289 kB)
+#8 3.255      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 289.2/289.2 kB 338.4 MB/s eta 0:00:00
+#8 3.297 Collecting itsdangerous>=2.0
+#8 3.308   Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+#8 3.343 Collecting Jinja2>=3.0
+#8 3.355   Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+#8 3.358      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 134.9/134.9 kB 302.5 MB/s eta 0:00:00
+#8 3.398 Collecting click>=8.0
+#8 3.408   Downloading click-8.1.8-py3-none-any.whl (98 kB)
+#8 3.411      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 98.2/98.2 kB 298.7 MB/s eta 0:00:00
+#8 3.506 Collecting importlib-metadata>=3.6.0
+#8 3.517   Downloading importlib_metadata-8.6.1-py3-none-any.whl (26 kB)
+#8 3.598 Collecting urllib3<1.27,>=1.21.1
+#8 3.609   Downloading urllib3-1.26.20-py2.py3-none-any.whl (144 kB)
+#8 3.612      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 144.2/144.2 kB 239.8 MB/s eta 0:00:00
+#8 3.644 Collecting idna<4,>=2.5
+#8 3.655   Downloading idna-3.10-py3-none-any.whl (70 kB)
+#8 3.658      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 70.4/70.4 kB 290.2 MB/s eta 0:00:00
+#8 3.700 Collecting certifi>=2017.4.17
+#8 3.710   Downloading certifi-2025.1.31-py3-none-any.whl (166 kB)
+#8 3.714      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 166.4/166.4 kB 247.0 MB/s eta 0:00:00
+#8 3.926 Collecting charset-normalizer<3,>=2
+#8 3.938   Downloading charset_normalizer-2.1.1-py3-none-any.whl (39 kB)
+#8 3.988 Collecting tomli>=1.0.0
+#8 4.000   Downloading tomli-2.2.1-py3-none-any.whl (14 kB)
+#8 4.040 Collecting packaging
+#8 4.052   Downloading packaging-24.2-py3-none-any.whl (65 kB)
+#8 4.054      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 65.5/65.5 kB 176.0 MB/s eta 0:00:00
+#8 4.075 Collecting iniconfig
+#8 4.085   Downloading iniconfig-2.0.0-py3-none-any.whl (5.9 kB)
+#8 4.114 Collecting exceptiongroup>=1.0.0rc8
+#8 4.125   Downloading exceptiongroup-1.2.2-py3-none-any.whl (16 kB)
+#8 4.160 Collecting attrs>=19.2.0
+#8 4.172   Downloading attrs-25.3.0-py3-none-any.whl (63 kB)
+#8 4.174      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 63.8/63.8 kB 266.5 MB/s eta 0:00:00
+#8 4.207 Collecting pluggy<2.0,>=0.12
+#8 4.217   Downloading pluggy-1.5.0-py3-none-any.whl (20 kB)
+#8 4.372 Collecting zipp>=3.20
+#8 4.383   Downloading zipp-3.21.0-py3-none-any.whl (9.6 kB)
+#8 4.539 Collecting MarkupSafe>=2.0
+#8 4.550   Downloading MarkupSafe-3.0.2-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (20 kB)
+#8 4.789 Installing collected packages: zipp, Werkzeug, urllib3, tomli, pluggy, packaging, MarkupSafe, itsdangerous, iniconfig, idna, exceptiongroup, click, charset-normalizer, certifi, attrs, requests, pytest, Jinja2, importlib-metadata, Flask
+#8 6.028 Successfully installed Flask-2.1.2 Jinja2-3.1.6 MarkupSafe-3.0.2 Werkzeug-2.0.3 attrs-25.3.0 certifi-2025.1.31 charset-normalizer-2.1.1 click-8.1.8 exceptiongroup-1.2.2 idna-3.10 importlib-metadata-8.6.1 iniconfig-2.0.0 itsdangerous-2.2.0 packaging-24.2 pluggy-1.5.0 pytest-7.2.0 requests-2.28.1 tomli-2.2.1 urllib3-1.26.20 zipp-3.21.0
+#8 6.029 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+#8 6.168
+#8 6.168 [notice] A new release of pip is available: 23.0.1 -> 25.0.1
+#8 6.168 [notice] To update, run: pip install --upgrade pip
+#8 DONE 6.3s
+
+#9 [app 5/5] COPY . /app
+#9 DONE 0.1s
+
+#10 [app] exporting to image
+#10 exporting layers
+#10 exporting layers 0.3s done
+#10 writing image sha256:5c99580b86d876ff290933e894216b25e718921b75f0c9f41cbdac0938c393ed
+#10 writing image sha256:5c99580b86d876ff290933e894216b25e718921b75f0c9f41cbdac0938c393ed done
+#10 naming to docker.io/library/myapp-app done
+#10 DONE 0.3s
+
+#11 [app] resolving provenance for metadata file
+#11 DONE 0.0s
+ app  Built
+[Pipeline] }
+$ ssh-agent -k
+unset SSH_AUTH_SOCK;
+unset SSH_AGENT_PID;
+echo Agent pid 26909 killed;
+[ssh-agent] Stopped.
+[Pipeline] // sshagent
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy on Remote)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sshagent
+[ssh-agent] Using credentials ubuntu
+$ ssh-agent
+SSH_AUTH_SOCK=/tmp/ssh-rlmSsqUrXtNH/agent.26948
+SSH_AGENT_PID=26951
+Running ssh-add (command line suppressed)
+Identity added: /var/lib/jenkins/workspace/test@tmp/private_key_9001177952107075696.key (ubuntu@ip-172-31-22-166)
+[ssh-agent] Started.
+[Pipeline] {
+[Pipeline] sh
++ ssh -o StrictHostKeyChecking=no ubuntu@34.208.104.73
+                             cd /opt/myapp &&
+                             echo "Содержимое /opt/myapp:" && ls -la &&
+                             sudo docker compose -f docker-compose.yml up -d
+
+Содержимое /opt/myapp:
+total 32
+drwxr-xr-x 6  111 docker 4096 Mar 13 14:55 .
+drwxr-xr-x 4 root root   4096 Mar 13 14:14 ..
+drwxr-xr-x 8  111 docker 4096 Mar 13 15:04 .git
+drwxr-xr-x 2  111 docker 4096 Mar 13 13:58 .idea
+-rw-r--r-- 1  111 docker   14 Mar 13 13:58 README.md
+-rw-r--r-- 1  111 docker  705 Mar 13 14:55 docker-compose.yml
+drwxr-xr-x 2  111 docker 4096 Mar 13 13:58 monitoring
+drwxr-xr-x 2  111 docker 4096 Mar 13 15:04 my-python-app
+time="2025-03-13T15:04:58Z" level=warning msg="/opt/myapp/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+ Container myapp-app-1  Recreate
+ Container myapp-prometheus-1  Running
+ Container myapp-cadvisor-1  Running
+ Container myapp-grafana-1  Running
+ Container myapp-app-1  Recreated
+ Container myapp-app-1  Starting
+ Container myapp-app-1  Started
+[Pipeline] }
+$ ssh-agent -k
+unset SSH_AUTH_SOCK;
+unset SSH_AGENT_PID;
+echo Agent pid 26951 killed;
+[ssh-agent] Stopped.
+[Pipeline] // sshagent
+[Pipeline] sleep
+Sleeping for 10 sec
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Test WebApp on Remote)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sshagent
+[ssh-agent] Using credentials ubuntu
+$ ssh-agent
+SSH_AUTH_SOCK=/tmp/ssh-Ic8qcVgZcJoP/agent.26973
+SSH_AGENT_PID=26976
+Running ssh-add (command line suppressed)
+Identity added: /var/lib/jenkins/workspace/test@tmp/private_key_2533090393298170883.key (ubuntu@ip-172-31-22-166)
+[ssh-agent] Started.
+[Pipeline] {
+[Pipeline] sh
++ ssh -o StrictHostKeyChecking=no ubuntu@34.208.104.73 curl -s -o /dev/null -w "%{http_code}" http://localhost:5000
+[Pipeline] echo
+Health-check passed: received HTTP 200
+[Pipeline] }
+$ ssh-agent -k
+unset SSH_AUTH_SOCK;
+unset SSH_AGENT_PID;
+echo Agent pid 26976 killed;
+[ssh-agent] Stopped.
+[Pipeline] // sshagent
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Push to Registry)
+Stage "Push to Registry" skipped due to when conditional
+[Pipeline] getContext
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] echo
+Pipeline finished.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
