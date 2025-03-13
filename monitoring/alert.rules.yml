@@ -1,0 +1,11 @@
+groups:
+- name: example_alerts
+  rules:
+  - alert: HighCPUUsage
+    expr: sum(rate(node_cpu_seconds_total{mode="idle"}[1m])) by (instance) < 0.2
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High CPU usage on instance {{ $labels.instance }}"
+      description: "The CPU idle time is less than 20% for more than 2 minutes."
